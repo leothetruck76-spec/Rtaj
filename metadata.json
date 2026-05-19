@@ -1,0 +1,6 @@
+{
+  "name": "Mood Beauty Salon",
+  "description": "Premium beauty salon in Dubai Creek Harbour offering luxury hair, nail, and spa services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

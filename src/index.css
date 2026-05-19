@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-primary: #1a1a1a;
+  --color-brand-secondary: #f5f2ed;
+  --color-brand-accent: #c4a484; /* Soft gold/beige */
+}
+
+@layer base {
+  body {
+    @apply bg-brand-secondary text-brand-primary font-sans;
+  }
+}
+
+.arabic {
+  direction: rtl;
+  font-family: 'Inter', sans-serif; /* Standard arabic font would be better, but Inter works well generally */
+}
+
+/* Custom fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
