@@ -18,7 +18,10 @@ import {
   X,
   Scissors,
   Sparkles,
-  Heart
+  Heart,
+  Check,
+  Calendar,
+  Clock
 } from 'lucide-react';
 import { translations } from './translations';
 
@@ -33,7 +36,7 @@ const categoryIcons: Record<string, any> = {
 // Note: We'll use placeholder-like paths that will be resolved to the actual generated artifacts
 const images = {
   hero: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1974&auto=format&fit=crop", // Fallback if local not found yet
-  heroLocal: "/src/assets/images/mood_salon_hero_1779213760658.png",
+  heroLocal: "/src/assets/images/mood_salon_interior_1780142243246.png",
   hair: "/src/assets/images/mood_hair_service_1779213786337.png",
   nail: "/src/assets/images/mood_nail_service_1779213809909.png",
   spa: "/src/assets/images/mood_spa_service_1779213827227.png"
@@ -43,6 +46,7 @@ export default function App() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'hair' | 'nails' | 'spa'>('hair');
+  const [bookingSuccess, setBookingSuccess] = useState<any | null>(null);
   
   const t = translations[lang];
   const isRTL = lang === 'ar';
@@ -50,6 +54,17 @@ export default function App() {
   const toggleLanguage = () => {
     setLang(prev => prev === 'en' ? 'ar' : 'en');
   };
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   const navItems = [
     { name: t.nav.services, href: "#services" },
@@ -207,32 +222,41 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 order-2 lg:order-1">
+              <div className="order-2 lg:order-1">
                 <AnimatePresence mode="wait">
-                  {t.services.items
-                    .filter(item => item.category === activeTab)
-                    .map((item, index) => {
-                      const Icon = categoryIcons[item.category];
-                      return (
-                        <motion.div
-                          key={item.id}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="p-6 border border-brand-secondary rounded-2xl hover:border-brand-accent hover:shadow-xl hover:shadow-brand-accent/5 transition-all group"
-                        >
-                          <div className="w-12 h-12 bg-brand-secondary rounded-xl flex items-center justify-center mb-4 text-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-colors">
-                            <Icon size={20} />
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.25 }}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                  >
+                    {t.services.items
+                      .filter(item => item.category === activeTab)
+                      .map((item) => {
+                        const Icon = categoryIcons[item.category];
+                        return (
+                          <div
+                            key={item.id}
+                            className="p-6 border border-brand-secondary bg-white rounded-2xl hover:border-brand-accent hover:shadow-xl hover:shadow-brand-accent/5 transition-all group flex flex-col justify-between min-h-[140px]"
+                          >
+                            <div>
+                              <div className="w-12 h-12 bg-brand-secondary rounded-xl flex items-center justify-center mb-4 text-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-colors">
+                                <Icon size={20} />
+                              </div>
+                              <h3 className="text-lg font-serif font-medium mb-1">{item.title}</h3>
+                            </div>
+                            <div className="flex justify-end mt-2">
+                              <ChevronRight 
+                                size={16} 
+                                className={`text-brand-accent transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} 
+                              />
+                            </div>
                           </div>
-                          <h3 className="text-lg font-serif font-medium mb-1">{item.title}</h3>
-                          <ChevronRight 
-                            size={16} 
-                            className={`text-brand-accent transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180' : ''}`} 
-                          />
-                        </motion.div>
-                      );
-                    })}
+                        );
+                      })}
+                  </motion.div>
                 </AnimatePresence>
               </div>
 
@@ -299,88 +323,164 @@ export default function App() {
               <p className="text-lg text-gray-500 font-light">{t.booking.subtitle}</p>
             </div>
 
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                const name = formData.get('name');
-                const phone = formData.get('phone');
-                const service = formData.get('service');
-                const date = formData.get('date');
-                const time = formData.get('time');
-                
-                const message = encodeURIComponent(
-                  `Hello Mood Salon, I'd like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nService: ${service}\nDate: ${date}\nTime: ${time}`
-                );
-                window.open(`https://wa.me/971504030102?text=${message}`, '_blank');
-              }}
-              className="bg-brand-secondary/30 p-8 md:p-12 rounded-[2.5rem] border border-brand-primary/5 space-y-6"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium opacity-70 px-1">{t.booking.name}</label>
-                  <input 
-                    required
-                    name="name"
-                    type="text" 
-                    placeholder={t.booking.placeholderName}
-                    className="w-full bg-white border-0 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent transition-all outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium opacity-70 px-1">{t.booking.phone}</label>
-                  <input 
-                    required
-                    name="phone"
-                    type="tel" 
-                    placeholder={t.booking.placeholderPhone}
-                    className="w-full bg-white border-0 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent transition-all outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium opacity-70 px-1">{t.booking.service}</label>
-                <select 
-                  required
-                  name="service"
-                  className="w-full bg-white border-0 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent transition-all outline-none appearance-none"
+            <AnimatePresence mode="wait">
+              {!bookingSuccess ? (
+                <motion.form 
+                  key="booking-form"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    const name = formData.get('name') as string;
+                    const phone = formData.get('phone') as string;
+                    const service = formData.get('service') as string;
+                    const date = formData.get('date') as string;
+                    const time = formData.get('time') as string;
+                    
+                    setBookingSuccess({ name, phone, service, date, time });
+                  }}
+                  className="bg-brand-secondary/30 p-8 md:p-12 rounded-[2.5rem] border border-brand-primary/5 space-y-6 animate-fade-in"
                 >
-                  {t.services.items.map(item => (
-                    <option key={item.id} value={item.title}>{item.title}</option>
-                  ))}
-                </select>
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium opacity-70 px-1">{t.booking.name}</label>
+                      <input 
+                        required
+                        name="name"
+                        type="text" 
+                        placeholder={t.booking.placeholderName}
+                        className="w-full bg-white border border-brand-primary/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition-all outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium opacity-70 px-1">{t.booking.phone}</label>
+                      <input 
+                        required
+                        name="phone"
+                        type="tel" 
+                        placeholder={t.booking.placeholderPhone}
+                        className="w-full bg-white border border-brand-primary/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition-all outline-none"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium opacity-70 px-1">{t.booking.date}</label>
-                  <input 
-                    required
-                    name="date"
-                    type="date" 
-                    className="w-full bg-white border-0 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent transition-all outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium opacity-70 px-1">{t.booking.time}</label>
-                  <input 
-                    required
-                    name="time"
-                    type="time" 
-                    className="w-full bg-white border-0 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent transition-all outline-none"
-                  />
-                </div>
-              </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium opacity-70 px-1">{t.booking.service}</label>
+                    <div className="relative">
+                      <select 
+                        required
+                        name="service"
+                        className="w-full bg-white border border-brand-primary/10 rounded-2xl px-6 py-4 pr-12 text-left focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition-all outline-none appearance-none"
+                      >
+                        {t.services.items.map(item => (
+                          <option key={item.id} value={item.title}>{item.title}</option>
+                        ))}
+                      </select>
+                      <div className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-brand-primary/50 ${isRTL ? 'left-6' : 'right-6'}`}>
+                        <ChevronRight className="rotate-90" size={18} />
+                      </div>
+                    </div>
+                  </div>
 
-              <button 
-                type="submit"
-                className="w-full bg-brand-primary text-white font-bold py-5 rounded-2xl hover:bg-brand-accent transition-all shadow-xl shadow-brand-primary/10 mt-4 flex items-center justify-center gap-3"
-              >
-                <MessageCircle size={20} />
-                {t.booking.submit}
-              </button>
-            </form>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium opacity-70 px-1">{t.booking.date}</label>
+                      <input 
+                        required
+                        name="date"
+                        type="date" 
+                        className="w-full bg-white border border-brand-primary/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition-all outline-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium opacity-70 px-1">{t.booking.time}</label>
+                      <input 
+                        required
+                        name="time"
+                        type="time" 
+                        className="w-full bg-white border border-brand-primary/10 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-brand-accent focus:border-brand-accent transition-all outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="w-full bg-brand-primary text-white font-bold py-5 rounded-2xl hover:bg-brand-accent transition-all shadow-xl shadow-brand-primary/10 mt-4 flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <MessageCircle size={20} />
+                    {t.booking.submit}
+                  </button>
+                </motion.form>
+              ) : (
+                <motion.div 
+                  key="booking-success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="bg-brand-secondary/40 p-8 md:p-12 rounded-[2.5rem] border-2 border-brand-accent/30 text-center space-y-6 shadow-xl shadow-brand-accent/5 max-w-xl mx-auto"
+                >
+                  <div className="w-16 h-16 bg-brand-accent/20 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Check size={32} />
+                  </div>
+                  
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold text-brand-primary">
+                    {lang === 'en' ? 'Appointment Initialized!' : 'تم تأكيد طلب الحجز!'}
+                  </h3>
+                  
+                  <p className="text-gray-600 font-light max-w-sm mx-auto">
+                    {t.booking.success}
+                  </p>
+
+                  <div className="bg-white/80 border border-brand-primary/5 rounded-2xl p-6 text-left space-y-3 font-sans max-w-md mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
+                    <div className="flex justify-between items-center text-sm border-b border-brand-primary/5 pb-2">
+                      <span className="opacity-50">{lang === 'en' ? 'Guest:' : 'الضيف:'}</span>
+                      <span className="font-semibold text-brand-primary">{bookingSuccess.name}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm border-b border-brand-primary/5 pb-2">
+                      <span className="opacity-50">{lang === 'en' ? 'Service:' : 'الخدمة:'}</span>
+                      <span className="font-semibold text-brand-primary">{bookingSuccess.service}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm border-b border-brand-primary/5 pb-2">
+                      <span className="opacity-50">{lang === 'en' ? 'Date:' : 'التاريخ:'}</span>
+                      <span className="font-semibold text-brand-primary flex items-center gap-1">
+                        <Calendar size={14} className="text-brand-accent" />
+                        {bookingSuccess.date}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="opacity-50">{lang === 'en' ? 'Time:' : 'الوقت:'}</span>
+                      <span className="font-semibold text-brand-primary flex items-center gap-1">
+                        <Clock size={14} className="text-brand-accent" />
+                        {bookingSuccess.time}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 space-y-4">
+                    <a 
+                      href={`https://wa.me/971504030102?text=${encodeURIComponent(
+                        `Hello Mood Beauty Salon, I would like to confirm my appointment booking:\n\n👤 Name: ${bookingSuccess.name}\n📞 Phone: ${bookingSuccess.phone}\n💇‍♀️ Service: ${bookingSuccess.service}\n📅 Date: ${bookingSuccess.date}\n⏰ Time: ${bookingSuccess.time}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-[#25D366] text-white font-bold py-5 rounded-2xl hover:bg-[#20ba59] transition-all shadow-xl shadow-[#25D366]/20 flex items-center justify-center gap-3 cursor-pointer"
+                    >
+                      <MessageCircle size={22} fill="currentColor" />
+                      {lang === 'en' ? 'Open WhatsApp to Confirm' : 'افتح واتساب للتأكيد الآن'}
+                    </a>
+
+                    <button 
+                      onClick={() => setBookingSuccess(null)}
+                      className="text-sm font-medium text-brand-primary/60 hover:text-brand-accent underline transition-colors cursor-pointer"
+                    >
+                      {lang === 'en' ? 'Edit details / Book another slot' : 'تعديل التفاصيل / حجز موعد آخر'}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </section>
 
