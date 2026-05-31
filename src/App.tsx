@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Phone, 
@@ -24,6 +24,7 @@ import {
   Clock
 } from 'lucide-react';
 import { translations } from './translations';
+import OurWorkGallery from './components/OurWorkGallery';
 
 // Service Category mapping for icons
 const categoryIcons: Record<string, any> = {
@@ -55,6 +56,24 @@ export default function App() {
     setLang(prev => prev === 'en' ? 'ar' : 'en');
   };
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const id = href.substring(1);
+      const element = document.getElementById(id);
+      if (element) {
+        const headerHeight = 84; // Fixed header height h-20 (80px) + visual spacing
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -68,6 +87,7 @@ export default function App() {
 
   const navItems = [
     { name: t.nav.services, href: "#services" },
+    { name: lang === 'en' ? 'Our Work' : 'أعمالنا', href: "#gallery" },
     { name: t.nav.booking, href: "#booking" },
     { name: t.nav.location, href: "#location" },
   ];
@@ -85,7 +105,12 @@ export default function App() {
             {/* Desktop Nav */}
             <div className="hidden md:flex gap-6">
               {navItems.map((item) => (
-                <a key={item.name} href={item.href} className="text-sm font-medium hover:text-brand-accent transition-colors">
+                <a 
+                  key={item.name} 
+                  href={item.href} 
+                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  className="text-sm font-medium hover:text-brand-accent transition-colors"
+                >
                   {item.name}
                 </a>
               ))}
@@ -134,7 +159,10 @@ export default function App() {
                   key={item.name} 
                   href={item.href} 
                   className="text-3xl font-serif"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    setIsMenuOpen(false);
+                    handleSmoothScroll(e, item.href);
+                  }}
                 >
                   {item.name}
                 </a>
@@ -283,6 +311,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Our Work Gallery Section */}
+        <OurWorkGallery lang={lang} t={translations[lang]} />
 
         {/* Testimonials */}
         <section className="py-24 bg-brand-secondary relative overflow-hidden">
@@ -573,7 +604,15 @@ export default function App() {
               <h4 className="font-serif text-xl mb-6">Quick Links</h4>
               <ul className="space-y-4 opacity-60">
                 {navItems.map(item => (
-                  <li key={item.name}><a href={item.href} className="hover:text-brand-accent transition-colors">{item.name}</a></li>
+                  <li key={item.name}>
+                    <a 
+                      href={item.href} 
+                      onClick={(e) => handleSmoothScroll(e, item.href)}
+                      className="hover:text-brand-accent transition-colors"
+                    >
+                      {item.name}
+                    </a>
+                  </li>
                 ))}
               </ul>
             </div>

@@ -69,6 +69,60 @@ export const translations = {
       success: "Thank you! Your request has been sent via WhatsApp.",
       placeholderName: "Your name",
       placeholderPhone: "Your phone number"
+    },
+    gallery: {
+      title: "Our Masterpieces",
+      subtitle: "A curated collection of real transformations and exquisite artistry crafted by our experts at Dubai Creek Harbour",
+      categories: {
+        all: "All Masterpieces",
+        hair: "Hair Creations",
+        nails: "Nail Artistry",
+        spa: "Spa & Massage"
+      },
+      items: [
+        {
+          id: "work-1",
+          title: "Seamless Caramel Balayage",
+          description: "Dimensional warm tones with signature silk press finish",
+          category: "hair",
+          image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-2",
+          title: "Luxury Glass Gel & Gold Leaf",
+          description: "Custom extensions detailing hand-painted fine gold lineart",
+          category: "nails",
+          image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-3",
+          title: "Aromatic Hot Stone Therapy",
+          description: "Rejuvenating deep muscle therapy using volcanic basalt stone",
+          category: "spa",
+          image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-4",
+          title: "Hollywood Signature Waves",
+          description: "Classic high-gloss glam waves with soft heat protective styling",
+          category: "hair",
+          image: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-5",
+          title: "Minimalist Opal Chrome",
+          description: "Futuristic iridescent pearl finish on natural almond shape",
+          category: "nails",
+          image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-6",
+          title: "Nourishing Herbal Botanical Facial",
+          description: "Custom tea-tree deep cleansing with rosewater hydration mask",
+          category: "spa",
+          image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop"
+        }
+      ]
     }
   },
   ar: {
@@ -140,6 +194,60 @@ export const translations = {
       success: "شكراً لك! تم إرسال طلبك عبر الواتساب.",
       placeholderName: "اسمك",
       placeholderPhone: "رقم هاتفك"
+    },
+    gallery: {
+      title: "إبداعاتنا المتميزة",
+      subtitle: "مجموعة منتقاة من تحولات الجمال الحقيقية واللمسات الفنية الفاخرة بأيدي خبرائنا في دبي كريك هاربور",
+      categories: {
+        all: "جميع الأعمال",
+        hair: "إبداعات الشعر",
+        nails: "فن الأظافر",
+        spa: "السبا والمساج"
+      },
+      items: [
+        {
+          id: "work-1",
+          title: "بالياج كراميل انسيابي",
+          description: "تدرجات ألوان دافئة ثلاثية الأبعاد مع لمسة نهائية حريرية مميزة",
+          category: "hair",
+          image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-2",
+          title: "أظافر جيل زجاجية تزدان بورق الذهب",
+          description: "وصلات أظافر مخصصة تزدان برسومات ذهبية فاخرة مرسومة يدوياً",
+          category: "nails",
+          image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-3",
+          title: "جلسة العلاج الساحر بالأحجار الساخنة",
+          description: "جلسة لتخفيف التوتر العضلي العميق باستخدام أحجار البازلت البركانية وبخاخات عطرية",
+          category: "spa",
+          image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-4",
+          title: "تسريحة مموجة هوليوودية",
+          description: "تموجات كلاسيكية فائقة اللمعان والجاذبية مع حماية مثالية لألياف الشعر",
+          category: "hair",
+          image: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-5",
+          title: "أظافر أوفال كروم لؤلؤي هادئ",
+          description: "مظهر لؤلؤي لامع قادم من المستقبل على أظافر لوزية الشكل طبيعية",
+          category: "nails",
+          image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+          id: "work-6",
+          title: "جلسة تنظيف وتغذية البشرة بالأعشاب الطبيعية",
+          description: "تنظيف عميق مخصص لشجرة الشاي مع قناع الترطيب الفائق بماء الورد",
+          category: "spa",
+          image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop"
+        }
+      ]
     }
   }
 };
